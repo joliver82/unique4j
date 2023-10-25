@@ -32,6 +32,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -347,9 +348,11 @@ public abstract class Unique4j {
 		// try to establish connection to server
 		Socket socket = null;
 		try {
-			socket = new Socket(ADDRESS, port);
-		} catch (IOException e) {
+			socket = new Socket();
+			socket.connect(new InetSocketAddress(ADDRESS, port), 1000);
+		} catch (Exception e) {
 			// connection failed try to start server
+                        socket = null;
 			startServer();
 		}
 		
